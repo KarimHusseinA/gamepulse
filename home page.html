@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Your Ultimate Gaming News Source</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00d4ff, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: linear-gradient(45deg, #00d4ff, #ff6b6b);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23001122" width="1200" height="600"/><circle fill="%2300d4ff" opacity="0.1" cx="200" cy="150" r="100"/><circle fill="%23ff6b6b" opacity="0.1" cx="800" cy="300" r="150"/><circle fill="%2300ff88" opacity="0.1" cx="1000" cy="100" r="80"/></svg>');
+            background-size: cover;
+            background-position: center;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00d4ff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Section Tabs */
+        .section-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: linear-gradient(45deg, #00d4ff, #ff6b6b);
+            border-color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            margin: 3rem 0;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #00d4ff, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        .card-badge {
+            background: linear-gradient(45deg, #ff6b6b, #00d4ff);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .card-content {
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .game-screenshot {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(45deg, #001122, #003344);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 3rem;
+        }
+
+        /* News List */
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .news-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 4px solid #00d4ff;
+            transition: all 0.3s ease;
+        }
+
+        .news-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(10px);
+        }
+
+        .news-item.controversy {
+            border-left-color: #ff6b6b;
+        }
+
+        .news-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #00d4ff;
+        }
+
+        .news-item.controversy .news-title {
+            color: #ff6b6b;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            border-top: 2px solid #00d4ff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">🎮 GameHub</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#features">Features</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Your Ultimate Gaming News Hub</h1>
+            <p>Stay updated with the latest game releases, industry news, reviews, and exclusive features</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-tabs">
+            <button class="tab-btn active" onclick="showSection('reviews')">🎯 Reviews & Previews</button>
+            <button class="tab-btn" onclick="showSection('news')">📰 Trending News</button>
+            <button class="tab-btn" onclick="showSection('gallery')">🖼️ Gallery</button>
+            <button class="tab-btn" onclick="showSection('features')">⭐ Special Features</button>
+        </div>
+
+        <!-- Reviews & Previews Section -->
+        <div id="reviews" class="content-section active">
+            <h2 class="section-title">Game Reviews & Previews</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #ff0080, #7928ca, #0070f3); display: flex; align-items: center; justify-content: center; font-size: 4rem;">🌃</div>
+                    <div class="card-header">
+                        <div class="card-title">Cyberpunk 2077: Phantom Liberty</div>
+                        <div class="card-badge">9.2/10</div>
+                    </div>
+                    <div class="card-content">
+                        A triumphant return to Night City with improved gameplay mechanics and a gripping storyline. The expansion delivers on promises with enhanced AI, better optimization, and compelling characters.
+                    </div>
+                    <div class="card-meta">
+                        <span>🎮 RPG</span>
+                        <span>📅 Oct 2023</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #dc2626, #1e40af, #ffffff); display: flex; align-items: center; justify-content: center; font-size: 4rem;">🕷️</div>
+                    <div class="card-header">
+                        <div class="card-title">Spider-Man 2 Preview</div>
+                        <div class="card-badge">Preview</div>
+                    </div>
+                    <div class="card-content">
+                        Early hands-on reveals incredible web-swinging mechanics and dual-character gameplay. Venom's inclusion promises to shake up the formula in exciting ways.
+                    </div>
+                    <div class="card-meta">
+                        <span>🕷️ Action</span>
+                        <span>📅 Coming Soon</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #7c2d12, #fbbf24, #1f2937); display: flex; align-items: center; justify-content: center; font-size: 4rem;">⚔️</div>
+                    <div class="card-header">
+                        <div class="card-title">Baldur's Gate 3</div>
+                        <div class="card-badge">9.8/10</div>
+                    </div>
+                    <div class="card-content">
+                        A masterpiece of storytelling and player choice. Every decision matters in this epic D&D adventure that sets a new standard for RPGs.
+                    </div>
+                    <div class="card-meta">
+                        <span>🐉 RPG</span>
+                        <span>📅 Aug 2023</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #1e1b4b, #3730a3, #e0e7ff); display: flex; align-items: center; justify-content: center; font-size: 4rem;">🚀</div>
+                    <div class="card-header">
+                        <div class="card-title">Starfield Review</div>
+                        <div class="card-badge">7.5/10</div>
+                    </div>
+                    <div class="card-content">
+                        Bethesda's space epic offers vast exploration but struggles with pacing. Beautiful visuals and solid gameplay can't fully overcome repetitive mission design.
+                    </div>
+                    <div class="card-meta">
+                        <span>🚀 Sci-Fi</span>
+                        <span>📅 Sep 2023</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trending News Section -->
+        <div id="news" class="content-section">
+            <h2 class="section-title">Trending Gaming News</h2>
+            <div class="news-list">
+                <div class="news-item">
+                    <div class="news-title">🎉 PlayStation 5 Pro Officially Announced</div>
+                    <div class="card-content">
+                        Sony reveals the PS5 Pro with enhanced 4K gaming capabilities and improved ray tracing. Expected release in late 2024 with backward compatibility for all PS5 games.
+                    </div>
+                    <div class="card-meta">
+                        <span>📅 2 hours ago</span>
+                        <span>💬 1.2K comments</span>
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-title">🔥 Grand Theft Auto VI Trailer Breaks Records</div>
+                    <div class="card-content">
+                        The first official GTA VI trailer garners 100 million views in 24 hours, setting new YouTube records. Rockstar confirms 2025 release window for PS5 and Xbox Series X/S.
+                    </div>
+                    <div class="card-meta">
+                        <span>📅 5 hours ago</span>
+                        <span>💬 5.7K comments</span>
+                    </div>
+                </div>
+
+                <div class="news-item controversy">
+                    <div class="news-title">⚠️ Major Gaming Studio Faces Layoffs</div>
+                    <div class="card-content">
+                        Electronic Arts announces restructuring affecting 670 employees across multiple studios. The decision comes despite record quarterly profits, sparking industry-wide discussions about corporate responsibility.
+                    </div>
+                    <div class="card-meta">
+                        <span>📅 1 day ago</span>
+                        <span>💬 3.1K comments</span>
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-title">🎮 Nintendo Direct Announces 15 New Games</div>
+                    <div class="card-content">
+                        Surprise Nintendo Direct showcases upcoming titles including new Mario Kart, Metroid Prime 4 gameplay, and third-party partnerships. Several games launching this holiday season.
+                    </div>
+                    <div class="card-meta">
+                        <span>📅 2 days ago</span>
+                        <span>💬 2.8K comments</span>
+                    </div>
+                </div>
+
+                <div class="news-item controversy">
+                    <div class="news-title">🚨 Microtransaction Controversy Hits Popular Game</div>
+                    <div class="card-content">
+                        Players revolt against aggressive monetization in latest AAA release. Community organizes boycott as developers face criticism for pay-to-win mechanics in $70 game.
+                    </div>
+                    <div class="card-meta">
+                        <span>📅 3 days ago</span>
+                        <span>💬 4.5K comments</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Section -->
+        <div id="gallery" class="content-section">
+            <h2 class="section-title">Image Galleries & Screenshots</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="game-screenshot">🌃</div>
+                    <h3>Cyberpunk 2077</h3>
+                    <p>Night City Screenshots</p>
+                </div>
+                <div class="gallery-item">
+                    <div class="game-screenshot">🕷️</div>
+                    <h3>Spider-Man 2</h3>
+                    <p>Web-Swinging Gallery</p>
+                </div>
+                <div class="gallery-item">
+                    <div class="game-screenshot">⚔️</div>
+                    <h3>Baldur's Gate 3</h3>
+                    <p>Character Creation</p>
+                </div>
+                <div class="gallery-item">
+                    <div class="game-screenshot">🚀</div>
+                    <h3>Starfield</h3>
+                    <p>Space Exploration</p>
+                </div>
+                <div class="gallery-item">
+                    <div class="game-screenshot">🏎️</div>
+                    <h3>Forza Motorsport</h3>
+                    <p>Racing Screenshots</p>
+                </div>
+                <div class="gallery-item">
+                    <div class="game-screenshot">🎯</div>
+                    <h3>Call of Duty</h3>
+                    <p>Multiplayer Maps</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Special Features Section -->
+        <div id="features" class="content-section">
+            <h2 class="section-title">Special Features</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4); display: flex; align-items: center; justify-content: center; font-size: 4rem;">🎮</div>
+                    <div class="card-header">
+                        <div class="card-title">🎮 The Future of Gaming in 2024</div>
+                        <div class="card-badge">Feature</div>
+                    </div>
+                    <div class="card-content">
+                        An in-depth look at upcoming technologies, VR advancements, and how AI is reshaping game development. Exclusive interviews with industry leaders and predictions for the next decade.
+                    </div>
+                    <div class="card-meta">
+                        <span>📖 15 min read</span>
+                        <span>📅 1 week ago</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 4rem;">🏆</div>
+                    <div class="card-header">
+                        <div class="card-title">🏆 Most Anticipated Games of 2024</div>
+                        <div class="card-badge">Exclusive</div>
+                    </div>
+                    <div class="card-content">
+                        Our comprehensive list of the 50 most anticipated games coming in 2024, featuring exclusive developer interviews, behind-the-scenes content, and release date predictions.
+                    </div>
+                    <div class="card-meta">
+                        <span>📖 20 min read</span>
+                        <span>📅 3 days ago</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #ec4899, #f97316, #eab308); display: flex; align-items: center; justify-content: center; font-size: 4rem;">🎨</div>
+                    <div class="card-header">
+                        <div class="card-title">🎨 The Art of Game Design</div>
+                        <div class="card-badge">Deep Dive</div>
+                    </div>
+                    <div class="card-content">
+                        Exploring the creative process behind iconic game worlds. From concept art to final implementation, discover how your favorite games come to life through exclusive artist interviews.
+                    </div>
+                    <div class="card-meta">
+                        <span>📖 12 min read</span>
+                        <span>📅 5 days ago</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #10b981, #059669, #047857); display: flex; align-items: center; justify-content: center; font-size: 4rem;">💰</div>
+                    <div class="card-header">
+                        <div class="card-title">💰 The Business of Gaming</div>
+                        <div class="card-badge">Analysis</div>
+                    </div>
+                    <div class="card-content">
+                        Market analysis of the gaming industry's growth, merger impacts, and the rise of subscription services. Understanding how business decisions affect the games we play.
+                    </div>
+                    <div class="card-meta">
+                        <span>📖 18 min read</span>
+                        <span>📅 1 week ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 GameHub. Your ultimate source for gaming news and updates.</p>
+            <p>Stay connected with the gaming community 🎮</p>
+        </div>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Add click handlers for cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card, .gallery-item, .news-item');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Add a subtle animation when clicked
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // Add smooth scrolling for navigation
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    if (targetId === 'home') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        // Show corresponding section
+                        const tabButtons = document.querySelectorAll('.tab-btn');
+                        tabButtons.forEach(btn => {
+                            if (btn.textContent.toLowerCase().includes(targetId)) {
+                                btn.click();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96a95cfbc5f7dad4',t:'MTc1NDQyOTA4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
